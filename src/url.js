@@ -1,0 +1,1 @@
+export let URL = "https://627f71c3b1cc1b126255a8a2.mockapi.io/studentdetails";
