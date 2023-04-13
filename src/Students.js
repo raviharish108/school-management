@@ -1,21 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {URL} from "./url"
 export function Students() {
   const [state, setstate] = useState([]);
-  // let URL = "https://627f71c3b1cc1b126255a8a2.mockapi.io/studentdetails";
-// let URL="http://localhost:4000/alladmissions";
-  let Data=(() => {
-    fetch(URL)
-    .then((response)=>response.json())
-    .then((data)=>setstate(data))
-})
+  const[loading,setloading]=useState(false)
+  let Data=async() => {
+    // fetch(URL)
+    // .then((response)=>response.json())
+    // .then((data)=>setstate(data))
+    try{
+       const response=await axios.get(`${URL}`)
+       await setstate(response.data);
+      
+    }catch(err){
+      console.log(err)
+    }
+}
   useEffect(()=>{
     Data();
   },[]);
-  let dele=(id)=>{
-    fetch(`${URL}/${id}`,{method:"DELETE"})
-   .then(()=>Data());
+
+
+  let dele=async(id)=>{
+  //   fetch(`${URL}/${id}`,{method:"DELETE"})
+  //  .then(()=>Data());
+  try{
+  await setloading(true)
+  await axios.delete(`${URL}/${id}`);
+  await alert("deleted successfully");
+ await setloading(false);
+  }catch(err){
+    console.log(err);
+    await alert(err.message);
+    await setloading(false);
+  }
+}
+
+if(loading){
+  return(
+    <div>
+      loading...
+    </div>
+  )
 }
   return (
     <div className='table'>

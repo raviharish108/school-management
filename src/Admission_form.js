@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import {URL} from "./url"
+import axios from "axios"
 export function Admission_form(){
   const formik = useFormik({
     initialValues: {
@@ -24,11 +25,13 @@ export function Admission_form(){
   });
   const navigate=useNavigate();
   const add_student=async(newone)=>{
-    await fetch(`${URL}`,
-    {method:"POST",
-    body: JSON.stringify(newone),
-    headers: {"Content-Type": "application/json"}})
-    .then(()=>navigate("/allstudents"))
+    try{
+    await axios.post(`${URL}`,newone);
+     await  navigate("/allstudents")
+    }
+    catch(err){
+      console.log(err)
+    } 
  };
   return (
     <form onSubmit={formik.handleSubmit} className="admission_form">

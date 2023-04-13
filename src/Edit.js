@@ -6,13 +6,19 @@ import TextField from '@mui/material/TextField';
 import { useParams } from 'react-router-dom';
 import {useState} from 'react'
 import {URL} from "./url"
+import axios from 'axios';
 export  function Edit(){
   const[std,setstd]=useState(null)
   const {id}=useParams();
   let result=async()=>{
-    let response=await fetch(`${URL}/${id}`);
-    let data=await response.json();
-   await setstd(data)
+    // let response=await fetch(`${URL}/${id}`);
+    // let data=await response.json();
+    try{
+    const response=await axios.get(`${URL}/${id}`)
+   await setstd(response.data)
+    }catch(err){
+      console.log(err)
+    }
   }
   // useEffect(() => {
   //   fetch(`https://627f71c3b1cc1b126255a8a2.mockapi.io/studentdetails/${id}`)
@@ -26,6 +32,8 @@ export  function Edit(){
     std ? <Editform student={std}/> : "loading..."   
   )
 }
+
+
  function Editform({student}){
   const {id}=useParams();
   const formik = useFormik({
@@ -48,9 +56,15 @@ export  function Edit(){
   });
   const navigate=useNavigate();
  const updateStudent = async (Id,newpayload) => {
-  await fetch(`${URL}/${Id}`,{ method: "PUT",body: JSON.stringify(newpayload),
-  headers: {"Content-Type": "application/json"} });
- await  navigate("/allstudents");
+  // await fetch(`${URL}/${Id}`,{ method: "PUT",body: JSON.stringify(newpayload),
+  // headers: {"Content-Type": "application/json"} });
+  try{
+   await 
+  await axios.put(`${URL}/${Id}`,newpayload);
+  await  navigate("/allstudents");
+ }catch(err){
+    console.log(err);
+  }
   }
   return (
     <form onSubmit={formik.handleSubmit} className="admission_form">
