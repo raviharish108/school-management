@@ -11,20 +11,14 @@ export  function Edit(){
   const[std,setstd]=useState(null)
   const {id}=useParams();
   let result=async()=>{
-    // let response=await fetch(`${URL}/${id}`);
-    // let data=await response.json();
     try{
-    const response=await axios.get(`${URL}/${id}`)
-   await setstd(response.data)
+    const response=await axios.get(`${URL}/api/student/onestd/${id}`)
+    setstd(response.data)
     }catch(err){
       console.log(err)
     }
   }
-  // useEffect(() => {
-  //   fetch(`https://627f71c3b1cc1b126255a8a2.mockapi.io/studentdetails/${id}`)
-  //     .then((response) => response.json())
-  //     .then((data) => setstd(data));
-  // }, []);
+
   useEffect(()=>{
     result();
   })
@@ -56,11 +50,9 @@ export  function Edit(){
   });
   const navigate=useNavigate();
  const updateStudent = async (Id,newpayload) => {
-  // await fetch(`${URL}/${Id}`,{ method: "PUT",body: JSON.stringify(newpayload),
-  // headers: {"Content-Type": "application/json"} });
   try{
    await 
-  await axios.put(`${URL}/${Id}`,newpayload);
+  await axios.put(`${URL}/api/student/update/${Id}`,newpayload);
   await  navigate("/allstudents");
  }catch(err){
     console.log(err);

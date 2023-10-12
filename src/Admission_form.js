@@ -3,9 +3,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 import {URL} from "./url"
 import axios from "axios"
 export function Admission_form(){
+  const[busy,setbusy]=useState(false);
   const formik = useFormik({
     initialValues: {
       name:'',
@@ -26,11 +28,14 @@ export function Admission_form(){
   const navigate=useNavigate();
   const add_student=async(newone)=>{
     try{
-    await axios.post(`${URL}`,newone);
+    await setbusy(true)
+    await axios.post(`${URL}/api/student/signup`,newone);
+    setbusy(false);
      await  navigate("/allstudents")
     }
     catch(err){
-      console.log(err)
+      setbusy(false);
+      alert(err.response.data.msg)
     } 
  };
   return (
@@ -79,7 +84,7 @@ export function Admission_form(){
         <div className='textfield'>{formik.errors.email}</div>
       ) : null} */}
       <br/>
-      <button type="submit">Submit</button>
+      <button type="submit">{busy?"submitting":"submit"}</button>
     </form>
   );
 };
