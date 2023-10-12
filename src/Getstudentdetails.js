@@ -21,7 +21,7 @@ export function Getstudentdetails() {
       <h1>name:{std.name}</h1>
       <h1>email:{std.email}</h1>
       <h1>id:{std._id}</h1>
-      <button onClick={(()=>navigate("/allstudents"))}>back</button>
+      <button onClick={(()=>navigate(-1))}>back</button>
     </div>
   );
 }
